@@ -37,16 +37,33 @@ io.sockets.on("connection", function(socket) {
 		var user_data = {name: name.name, id: socket.id};
 		//put this info into an object containing all current users
 		users[counter] = (user_data);
-		console.log(users);
+		// console.log(users);
 		socket.emit("new_user_info", {user_data});
 		//broadcast a welcome message to all other users
 		socket.broadcast.emit("new_user_entered", {message: "<p>" + name.name + " has joined the chat.</p>"});	
 	});
+	//when a new message comes through, format data and send it out to everyone
 	socket.on("new_message", function(data) {
 		console.log("data: ", data);
-		var message = "<p><span class='names'>" + data.name + ": </span>" + data.content;
+		//formatting
+		var message = "<p><span class='names'>" + data.name + ": </span>" + data.content + "</p>";
 		console.log(message);
+		//full broadcast
 		io.emit("send_message", {message});
-	})
-
+	});
+	socket.on("disconnect", function() {
+		var i = 1;
+		while (users[i] != null) {
+			console.log(users[i]);
+			//find the index where the socket id matches. then get the name from this index
+			if (users[i].id == socket.id) {
+			io.emit("user_logoff", {message: "<p>" + users[i].name + " has left the chat room.</p>"});
+			console.log("got here");
+			return true;
+			} else {
+				console.log("User not found");
+				i++;
+			}
+		}
+	});
 })

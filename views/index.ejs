@@ -23,7 +23,7 @@
 			socket.on("new_user_info", function(data) {
 				$("input[name='id']").attr("value", data.user_data.id);
 				$("input[name='name']").attr("value", data.user_data.name);
-			})
+			});
 			//when a new user has entered, display welcome
 			socket.on("new_user_entered", function(data) {
 				$("#chat_area").append(data.message);
@@ -34,13 +34,15 @@
 				var name = $("input[name='name']").val();
 				socket.emit("new_message", {content: message, name: name});
 				return false;
-			})
+			});
 			//when a new message comes through, display it in the chat
 			socket.on("send_message", function(message) {
 				$("#chat_area").append(message.message);
 				$("input[name='message']").value("");
 			});
-
+			socket.on("user_logoff", function(message) {
+				$("#chat_area").append(message.message);
+			});
 	})
 
 	</script>
