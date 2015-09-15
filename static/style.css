@@ -1,0 +1,40 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	font-family: arial;
+}
+body {
+	background: lightgray;
+	padding: 20px;
+}
+h1 {
+	font-size: 3em;
+	text-align: center;
+	margin: 20px;
+}
+div {
+	border: 2px solid black;
+	border-radius: 8px;
+	height: 700px;
+	width: 60%;
+	margin: 10px auto;
+	overflow: scroll;
+}
+.names {
+	font-weight: bold;
+}
+form {
+	display: block;
+	margin: 0 auto;
+	width: 60%;
+}
+	input[type=text] {
+		width: 80%;
+		font-size: 1.5em;
+		padding: 2px;
+	}
+	input[type=submit] {
+		width: 18%;
+		height: 100%;
+		font-size: 1.5em;
+	}

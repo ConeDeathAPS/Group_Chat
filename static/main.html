@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Entry Screeon</title>
+	<script type="text/javascript" src="/jquery.min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("form").submit(function() {
+			var socket = io.connect();
+			var name = $("input[type='text']").val();
+			socket.emit("new_user", {data: name});
+		});
+	})
+	</script>
+	<style type="text/css">
+		* {
+			padding: 0px;
+			margin: 0px;
+			font-family: arial;
+		}
+		body {
+			background: lightgray;
+			padding: 20px;
+		}
+		form {
+			display: block;
+			width: 600px;
+			margin: 0 auto;
+			text-align: center;
+			}
+			h1 {
+				margin: 20px auto;
+				font-size: 3em;
+			}
+			input[type=submit] {
+				display: block;
+				margin: 10px auto;
+			}
+			input {
+				margin: 10px;
+				font-size: 2em;
+				padding: 5px;
+			}
+
+	</style>
+</head>
+<body>
+	<form action="/login" method="post">
+		<h1>Please enter your name:</h1>
+		<input type="text" name="name">
+		<input type="submit">
+	</form>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Group Chat</title>
+	<link rel="stylesheet" type="text/css" href="/style.css">
+	<script type="text/javascript" src="/jquery.min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+			//while they did not enter their name
+			while (name == null) {
+				//prompt them for their name
+				var name = prompt("What is your name?");				
+			}
+				var socket = io.connect();
+				//emit "new_user" socket event
+				socket.emit("new_user", {name});
+				//fade in the divs
+				$("div").fadeIn("slow");
+				$("form").fadeIn("slow");
+			//when a new user logs in, get id
+			socket.on("new_user_info", function(data) {
+				$("input[name='id']").attr("value", data.user_data.id);
+				$("input[name='name']").attr("value", data.user_data.name);
+			})
+			//when a new user has entered, display welcome
+			socket.on("new_user_entered", function(data) {
+				$("#chat_area").append(data.message);
+			});
+			//when user submits the form, initiate the message sending process
+			$("form").submit(function() {
+				var message = $("input[name='message']").val();
+				var name = $("input[name='name']").val();
+				socket.emit("new_message", {content: message, name: name});
+				return false;
+			})
+			//when a new message comes through, display it in the chat
+			socket.on("send_message", function(message) {
+				$("#chat_area").append(message.message);
+				$("input[name='message']").value("");
+			});
+
+	})
+
+	</script>
+</head>
+<body>
+<h1>Welcome to the chat room!</h1>
+	<div id="chat_area">
+		
+
+	</div>
+	<form>
+		<input type="hidden" name="id" value="">
+		<input type="hidden" name="name" value="">
+		<input type="text" name="message">
+		<input type="submit">
+	</form>
+</body>
+</html>
